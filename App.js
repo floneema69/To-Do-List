@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Button, StyleSheet, Text, TextInput, View, StatusBar, SectionList, TouchableOpacity} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, View, StatusBar} from 'react-native';
+import List from './List';
 
 export default function App() {
     const [data, setData] = useState(['Reussir', 'Manger', 'Vivre']);
@@ -9,28 +10,13 @@ export default function App() {
         setData(data.filter((item, i) => i !== index));
     };
     const addItem = () => {
-        if (inputValue !== '') {
-            setData([...data, inputValue]);
+            setData(data.concat(inputValue));
             setInputValue('');
-        }
+
     };
     return (
         <View style={styles.container}>
-            <SectionList
-                sections={[
-                    {
-                        data: data,
-                    },
-                ]}
-                renderItem={({item, index}) => (
-                    <View style={styles.row}>
-                        <Text style={styles.item}>{item}</Text>
-                        <TouchableOpacity onPress={() => removeItem(index)}>
-                            <Text>Remove</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-            />
+            <List data={data} removeItem={removeItem} />
             <View style={styles.row}>
                 <TextInput
                     style={styles.input}
@@ -38,7 +24,7 @@ export default function App() {
                     value={inputValue}
                 />
                 <Button
-                    title="Press me"
+                    title="ajouter"
                     onPress={addItem}
                 />
             </View>
@@ -51,21 +37,18 @@ export default function App() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        paddingLeft: 10,
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '80%',
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingLeft: 10,
     },
 });
